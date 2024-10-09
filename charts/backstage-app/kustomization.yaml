@@ -9,6 +9,8 @@ resources:
   - ./pg-service.yaml
   - ./success-rate.yaml
   - ./backstage-deploy.yaml
-  - ./backstage-secret.yaml
   - ./backstage-rollout.yaml
+  - ./backstage-secret.yaml
   - ./backstage-service.yaml
+  - ./backstage-vs.yaml
+  - ./gateway.yaml

@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backstage
-  namespace: backstage
+  namespace: my-app
 spec:
   selector:
     app: backstage
@@ -16,6 +16,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backstage-rollout-canary
+  namespace: my-app
 spec:
   ports:
     - port: 80
@@ -30,6 +31,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backstage-rollout-stable
+  namespace: my-app
 spec:
   ports:
     - port: 80
