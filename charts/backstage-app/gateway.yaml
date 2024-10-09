@@ -2,6 +2,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: backstage-rollout-gateway
+  namespace: my-app
 spec:
   selector:
     istio: ingressgateway
