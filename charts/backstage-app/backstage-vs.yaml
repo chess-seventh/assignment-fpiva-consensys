@@ -3,6 +3,8 @@ kind: VirtualService
 metadata:
   name: backstage-rollout-vsvc
   namespace: my-app
+  labels:
+    app: backstage
 spec:
   gateways:
     - backstage-rollout-gateway
