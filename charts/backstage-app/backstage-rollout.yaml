@@ -6,7 +6,7 @@ spec:
   revisionHistoryLimit: 5
   selector:
     matchLabels:
-      app: backstage-rollout
+      app: backstage-rollout-run
   template:
     metadata:
       annotations:
