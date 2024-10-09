@@ -7,28 +7,33 @@ spec:
   selector:
     matchLabels:
       app: backstage-rollout
-  template:
-    metadata:
-      annotations:
-        sidecar.istio.io/inject: "true"
-      labels:
-        app: backstage-rollout
-    spec:
-      containers:
-        - name: backstage-rollout
-          image: backstage-franci:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - name: http
-              containerPort: 7007
-          env:
-            - name: POSTGRES_HOST
-              value: postgres.my-app.svc.cluster.local
-          envFrom:
-            - secretRef:
-                name: postgres-secrets
-            - secretRef:
-                name: backstage-secrets
+  workloadRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backstage
+    scaleDown: onsuccess
+  # template:
+  #   metadata:
+  #     annotations:
+  #       sidecar.istio.io/inject: "true"
+  #     labels:
+  #       app: backstage-rollout
+  #   spec:
+  #     containers:
+  #       - name: backstage-rollout
+  #         image: backstage-franci:latest
+  #         imagePullPolicy: IfNotPresent
+  #         ports:
+  #           - name: http
+  #             containerPort: 7007
+  #         env:
+  #           - name: POSTGRES_HOST
+  #             value: postgres.my-app.svc.cluster.local
+  #         envFrom:
+  #           - secretRef:
+  #               name: postgres-secrets
+  #           - secretRef:
+  #               name: backstage-secrets
   strategy:
     canary:
       canaryService: backstage-rollout-canary
