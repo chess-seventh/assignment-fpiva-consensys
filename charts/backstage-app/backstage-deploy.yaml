@@ -26,6 +26,9 @@ spec:
                 name: postgres-secrets
             - secretRef:
                 name: backstage-secrets
+          env:
+            - name: POSTGRES_URL
+              value: postgres.my-app.svc.cluster.local
           readinessProbe:
             httpGet:
               port: 7007
