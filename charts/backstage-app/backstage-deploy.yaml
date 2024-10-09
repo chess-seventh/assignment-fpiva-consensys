@@ -27,7 +27,7 @@ spec:
             - secretRef:
                 name: backstage-secrets
           env:
-            - name: POSTGRES_URL
+            - name: POSTGRES_HOST
               value: postgres.my-app.svc.cluster.local
           readinessProbe:
             httpGet:
