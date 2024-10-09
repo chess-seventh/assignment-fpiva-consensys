@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: yo-backstage-fra:latest
+          image: backstage-franci:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
