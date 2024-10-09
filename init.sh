@@ -4,12 +4,12 @@ set -e
 
 function start_mini_kube {
 	# MINIKUBE_STATUS=$(minikube status -o json | jq -r '.[].Host' | sort -u)
-	if [ "$(minikube status -o json | jq -r '.data.message' | grep "minikube start" 2>/dev/null)" == "To start a cluster, run: \"minikube start\"" ]; then
-		echo "Starting Minikube with Addons"
-		minikube start --addons=ingress,istio,istio-provisioner,metrics-server,ingress-dns,registry
-	else
-		echo "Minikube is already running"
-	fi
+	# if [ "$(minikube status -o json | jq -r '.data.message' | grep "minikube start" 2>/dev/null)" == "To start a cluster, run: \"minikube start\"" ]; then
+	echo "Starting Minikube with Addons"
+	minikube start --addons=ingress,istio,istio-provisioner,metrics-server,ingress-dns,registry
+	# else
+	# 	echo "Minikube is already running"
+	# fi
 }
 
 function install_argo {
@@ -37,9 +37,9 @@ function kube_cmds {
 	kubectl get pods -A
 }
 
-function build_docker_images {
-
-}
+# function build_docker_images {
+#
+# }
 
 # function check_argo_installed {
 # 	ARGO_INSTALLED=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
@@ -56,8 +56,8 @@ function build_docker_images {
 function main {
 	start_mini_kube
 	install_argo
-	# check_argo_installed
 	kube_cmds
+	# check_argo_installed
 	# delete_minikube
 }
 
