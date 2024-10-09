@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: my-app
+resources:
+  - ./namespace.yaml
+  - ./pg-deploy.yaml
+  - ./pg-secret.yaml
+  - ./pg-volume.yaml
+  - ./pg-service.yaml
+  - ./success-rate.yaml
+  - ./backstage-deploy.yaml
+  - ./backstage-secret.yaml
+  - ./backstage-rollout.yaml
+  - ./backstage-service.yaml
