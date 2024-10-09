@@ -40,7 +40,7 @@ spec:
           - templateName: istio-success-rate
         args: # arguments allow AnalysisTemplates to be re-used
           - name: service
-            value: canary
+            value: backstage-rollout-canary
           - name: namespace
             value: my-app
       trafficRouting:
