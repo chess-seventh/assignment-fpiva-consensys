@@ -41,8 +41,6 @@ application I've used to roll out this project.
 - Adds the ArgoCD Application manifest:  `init-files/application-backstage.yaml`
 - Builds the Backstage Docker Image and pushes it to the local `minikube` registry.
 
-
-
 <!-- ## Backstage init -->
 <!---->
 <!-- ```bash -->
