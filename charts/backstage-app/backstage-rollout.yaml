@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: backstage-rollout
-          image: backstage-app:v1
-          # image: quay.io/janus-idp/backstage-showcase:pr-1486-6677254
+          # image: backstage-app:v1
+          image: backstage-franci:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
