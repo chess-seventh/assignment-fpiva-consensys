@@ -4,8 +4,6 @@ kind: Service
 metadata:
   name: backstage
   namespace: my-app
-  labels:
-    app: backstage
 spec:
   selector:
     app: backstage
@@ -19,8 +17,6 @@ kind: Service
 metadata:
   name: backstage-rollout-canary
   namespace: my-app
-  labels:
-    app: backstage
 spec:
   ports:
     - port: 80
@@ -36,8 +32,6 @@ kind: Service
 metadata:
   name: backstage-rollout-stable
   namespace: my-app
-  labels:
-    app: backstage
 spec:
   ports:
     - port: 80
