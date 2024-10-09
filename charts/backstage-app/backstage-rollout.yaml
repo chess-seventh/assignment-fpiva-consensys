@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: backstage-rollout
+  name: backstage-rollout-run
 spec:
   revisionHistoryLimit: 5
   selector:
     matchLabels:
-      app: backstage-rollout-run
+      app: backstage-rollout
   template:
     metadata:
       annotations:
