@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: backstage-franci:latest
+          image: 192.168.49.2:5000/backstage-franci:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
