@@ -6,7 +6,7 @@ function start_mini_kube {
 	# MINIKUBE_STATUS=$(minikube status -o json | jq -r '.[].Host' | sort -u)
 	# if [ "$(minikube status -o json | jq -r '.data.message' | grep "minikube start" 2>/dev/null)" == "To start a cluster, run: \"minikube start\"" ]; then
 	echo "Starting Minikube with Addons"
-	minikube start --addons=ingress,istio,istio-provisioner,metrics-server,ingress-dns,registry
+	minikube start --addons=ingress,istio,istio-provisioner,metrics-server,ingress-dns,registry --insecure-registry "192.168.0.0/16" --cpus=4
 	# else
 	# 	echo "Minikube is already running"
 	# fi
