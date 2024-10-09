@@ -11,3 +11,30 @@ spec:
     - name: http
       port: 80
       targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backstage-rollout-canary
+spec:
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: backstage-rollout
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backstage-rollout-stable
+spec:
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: backstage-rollout

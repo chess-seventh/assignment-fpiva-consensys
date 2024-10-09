@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: backstage-rollout-vsvc
+spec:
+  gateways:
+    - backstage-rollout-gateway
+  hosts:
+    - backstage-rollout.apps.argoproj.io
+    - backstage-rollout.local
+  http:
+    - name: primary
+      route:
+        - destination:
+            host: backstage-rollout-stable
+          weight: 100
+        - destination:
+            host: backstage-rollout-canary
+          weight: 0
