@@ -1,0 +1,12 @@
+diff --git a/backstage-app/Dockerfile b/backstage-app/Dockerfile
+index 74418c9..23a92de 100644
+--- a/backstage-app/Dockerfile
++++ b/backstage-app/Dockerfile
+@@ -111,5 +111,5 @@ ENV NODE_ENV=production
+ # This disables node snapshot for Node 20 to work with the Scaffolder
+ ENV NODE_OPTIONS "--no-node-snapshot"
+ 
+-CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
+-# CMD ["exit 1"]
++# CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
++CMD ["exit 1"]
