@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
         - name: backstage-rollout
-          image: backstage-app:stable
-          # this image is using the wrong Database
-          # image: backstage-app:unstable
+          # image: backstage-app:stable
+          # this image is exiting with 1 at startup
+          image: backstage-app:unstable
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
