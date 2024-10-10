@@ -3,13 +3,8 @@
 set -e
 
 function start_mini_kube {
-	# MINIKUBE_STATUS=$(minikube status -o json | jq -r '.[].Host' | sort -u)
-	# if [ "$(minikube status -o json | jq -r '.data.message' | grep "minikube start" 2>/dev/null)" == "To start a cluster, run: \"minikube start\"" ]; then
 	echo "Starting Minikube with Addons"
 	minikube start --addons=ingress,istio,istio-provisioner,metrics-server,ingress-dns,registry --insecure-registry "192.168.0.0/16" --cpus=4
-	# else
-	# 	echo "Minikube is already running"
-	# fi
 }
 
 function install_argo {
@@ -32,32 +27,32 @@ function delete_minikube {
 	done
 }
 
+function apply_argo_applications {
+	echo "Applying Argo Applications"
+	kubectl apply -f ./init-files/application-backstage.yaml
+	kubectl apply -f ./init-files/application-prometheus.yaml
+}
+
 function kube_cmds {
 	kubectl get nodes
 	kubectl get pods -A
 }
 
-# function build_docker_images {
-#
-# }
-
-# function check_argo_installed {
-# 	ARGO_INSTALLED=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
-# 	ARGO_ROLLOUTS_INSTALLED=$(kubectl get pods -n argo-rollouts -l app.kubernetes.io/name=argo-rollouts -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)
-#
-# 	if [ -z "$ARGO_INSTALLED" || -z "$ARGO_ROLLOUTS_INSTALLED" ]; then
-# 		echo "ArgoCD is not installed"
-# 		intsall_argo
-# 	else
-# 		echo "ArgoCD is already installed"
-# 	fi
-# }
+function build_docker_images {
+	cd ./backstage-fpiva/
+	docker build -t backstage-app:v1 .
+	minikube image load backstage-app:v1
+}
 
 function main {
 	start_mini_kube
+	sleep 5
 	install_argo
+	sleep 5
+	apply_argo_applications
+	sleep 5
 	kube_cmds
-	# check_argo_installed
+	sleep 5
 	# delete_minikube
 }
 
