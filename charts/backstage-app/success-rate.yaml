@@ -3,6 +3,8 @@ kind: AnalysisTemplate
 metadata:
   name: cpu-success-rate
 spec:
+  args:
+    - name: podname
   metrics:
     - name: success-rate
       initialDelay: 60s
@@ -12,4 +14,4 @@ spec:
         prometheus:
           address: http://prometheus-operated.monitoring:9090
           query: >+
-            100 * (sum(rate(container_cpu_usage_seconds_total{pod=~"backstage-rollout.*"}[5m])) by (pod) / sum(kube_pod_container_resource_limits{pod=~"backstage-rollout.*", resource="cpu"}) by (pod))
+            100 * (sum(rate(container_cpu_usage_seconds_total{pod="{{args.podname}}"}[5m])) by (pod) / sum(kube_pod_container_resource_limits{pod=~"{{args.podname}}", resource="cpu"}) by (pod))

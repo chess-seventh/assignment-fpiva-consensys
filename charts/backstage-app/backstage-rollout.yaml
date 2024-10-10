@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
         - name: backstage-rollout
-          # image: backstage-app:stable
+          image: backstage-app:stable
           # this image is exiting with 1 at startup
-          image: backstage-app:v1.unstable
+          # image: backstage-app:v1.unstable
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -47,6 +47,11 @@ spec:
         startingStep: 1 # index of step list, of when to start this analysis
         templates:
           - templateName: cpu-success-rate
+        args: # arguments allow AnalysisTemplates to be re-used
+          - name: podname
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
       trafficRouting:
         istio:
           virtualService:
