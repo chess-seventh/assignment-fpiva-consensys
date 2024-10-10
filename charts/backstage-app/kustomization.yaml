@@ -11,4 +11,5 @@ resources:
   - ./backstage-rollout.yaml
   - ./backstage-secret.yaml
   - ./backstage-service.yaml
+  - ./backstage-vs.yaml
   - ./gateway.yaml
