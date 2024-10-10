@@ -64,6 +64,11 @@ function apply_argo_applications {
 
 function kube_cmds {
 	kubectl get pods -A
+
+	echo "==============================---------------"
+	echo "🎯 Getting ArgoCD initial Password to login:"
+	echo "============================================="
+	kubectl get secrets -n argocd argocd-initial-admin-secret -o json | jq -r '.data.password' | base64 -d
 }
 
 function delete_minikube {
@@ -74,6 +79,16 @@ function delete_minikube {
 		[Nn]*) echo "Not deleting Minikube instance" return 0 ;;
 		esac
 	done
+}
+
+function infos {
+	echo "You can see the ArgoCD interface by running:"
+	echo ">> kubectl port-forward -n argocd svc/argocd-server 8080:80"
+	echo "\n\n\n"
+
+	echo "You can monitor the ArgoRollouts (by having installed the proper kubectl plugin):"
+	echo ">> kubectl argo rollouts get rollout backstage-rollout -n my-app -w"
+	echo "\n\n\n"
 }
 
 function main {
@@ -90,6 +105,7 @@ function main {
 	kube_cmds
 	sleep 5
 	# delete_minikube
+	infos
 }
 
 main
