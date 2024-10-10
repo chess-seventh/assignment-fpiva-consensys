@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backstage-rollout
-          image: backstage-app:v1.stable
+          image: backstage-app:v1.unstable
           # this image is exiting with 1 at startup
           # image: backstage-app:v1.unstable
           imagePullPolicy: IfNotPresent
