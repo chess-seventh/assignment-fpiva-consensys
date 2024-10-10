@@ -3,18 +3,67 @@
 set -e
 
 function start_mini_kube {
-	echo "Starting Minikube with Addons"
+	echo "================================="
+	echo "🎯 Starting Minikube with Addons"
+	echo "================================="
 	minikube start --addons=ingress,istio,istio-provisioner,metrics-server,ingress-dns,registry --insecure-registry "192.168.0.0/16" --cpus=4
 }
 
 function install_argo {
-	echo "Installing ArgoCD"
+	echo "==================="
+	echo "🎯 Installing ArgoCD"
+	echo "==================="
 	kubectl create ns argocd
 	kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-	echo "Installing Argo Rollouts"
+	echo "============================"
+	echo "🎯 Installing Argo Rollouts"
+	echo "============================"
 	kubectl create namespace argo-rollouts
 	kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+}
+
+function build_docker_stable {
+	echo "================================="
+	echo "🎯 Building Stable Backstage App"
+	echo "================================="
+	cd ./backstage-app/
+	docker build -t backstage-app:v1.stable .
+	cd -
+}
+
+function build_docker_unstable {
+	echo "==================================="
+	echo "🎯 Building UNStable Backstage App"
+	echo "==================================="
+
+	git apply ./init-files/patch.diff
+
+	cd ./backstage-app/
+	docker build -t backstage-app:v1.unstable .
+	cd -
+}
+
+function push_docker_to_minikube {
+	echo "=============================="
+	echo "🎯 Pushing images to Minikube"
+	echo "=============================="
+	minikube image load backstage-app:v1.stable
+	minikube image load backstage-app:v1.unstable
+
+	git checkout -- .
+}
+
+function apply_argo_applications {
+	echo "=============================="
+	echo "🎯 Applying Argo Applications"
+	echo "=============================="
+	kubectl apply -f ./init-files/application-backstage.yaml
+	kubectl apply -f ./init-files/application-prometheus.yaml
+}
+
+function kube_cmds {
+	kubectl get pods -A
 }
 
 function delete_minikube {
@@ -27,38 +76,14 @@ function delete_minikube {
 	done
 }
 
-function apply_argo_applications {
-	echo "Applying Argo Applications"
-	kubectl apply -f ./init-files/application-backstage.yaml
-	kubectl apply -f ./init-files/application-prometheus.yaml
-}
-
-function kube_cmds {
-	kubectl get nodes
-	kubectl get pods -A
-}
-
-function build_docker_images {
-	cd ./backstage-app/
-	docker build -t backstage-app:v1.stable .
-	minikube image load backstage-app:v1.stable
-	cd -
-
-	git apply ./init-files/patch.diff
-
-	cd ./backstage-app/
-	docker build -t backstage-app:v1.unstable .
-	minikube image load backstage-app:v1.unstable
-
-	git checkout -- .
-}
-
 function main {
 	start_mini_kube
 	sleep 5
 	install_argo
 	sleep 5
-	build_docker_images
+	build_docker_stable
+	build_docker_unstable
+	push_docker_to_minikube
 	sleep 5
 	apply_argo_applications
 	sleep 5
