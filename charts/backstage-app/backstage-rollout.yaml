@@ -18,7 +18,7 @@ spec:
         - name: backstage-rollout
           # image: backstage-app:stable
           # this image is exiting with 1 at startup
-          image: backstage-app:unstable
+          image: backstage-app:v1.unstable
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
