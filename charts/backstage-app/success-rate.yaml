@@ -1,23 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: istio-success-rate
+  name: cpu-success-rate
 spec:
-  # this analysis template requires a service name and namespace to be supplied to the query
-  args:
-    - name: service
-    - name: namespace
   metrics:
     - name: success-rate
       initialDelay: 60s
       interval: 20s
-      successCondition: result[0] > 0.90
+      successCondition: result[0] < 1
       provider:
         prometheus:
           address: http://prometheus-operated.monitoring:9090
           query: >+
-            sum(
-              rate(nginx_ingress_controller_requests{ingress="{{args.ingress}}",status!~"[4-5].*"}[20s]))
-              /
-              sum(rate(nginx_ingress_controller_requests{ingress="{{args.ingress}}"}[20s])
-            )
+            100 * (sum(rate(container_cpu_usage_seconds_total{pod=~"backstage-rollout.*"}[5m])) by (pod) / sum(kube_pod_container_resource_limits{pod=~"backstage-rollout.*", resource="cpu"}) by (pod))

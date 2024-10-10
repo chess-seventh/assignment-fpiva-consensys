@@ -45,12 +45,7 @@ spec:
       analysis:
         startingStep: 1 # index of step list, of when to start this analysis
         templates:
-          - templateName: istio-success-rate
-        args: # arguments allow AnalysisTemplates to be re-used
-          - name: service
-            value: backstage-rollout-canary
-          - name: namespace
-            value: my-app
+          - templateName: cpu-success-rate
       trafficRouting:
         istio:
           virtualService:
