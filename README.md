@@ -43,7 +43,7 @@ application I've used to roll out this project.
 
 ## How to use this project
 
-When we roll-out the image of backstage: `backstage-app:v1` everything is fine,
+When we roll-out the image of backstage: `backstage-app:stable` everything is fine,
 this image is stable.
 
 For the sake of the example, when we push any kind of changes in the Docker
