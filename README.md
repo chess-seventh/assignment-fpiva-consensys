@@ -57,10 +57,12 @@ In order to test this locally and make a proper PoC here is the shortcuts I
 have deliberately taken:
 
 - Omitted the CICD: to promote, push to a registry any changes done to the
-Docker Backstage app image.
+  Docker Backstage app image.
 - Didn't fine-tune the Kube-Prometheus-Stack values.
 - Did not adapt neither Nginx nor Istio.
 - I have chosen to go with the Canaray Deployment method instead of the Blue-Green.
+- The Analysis is very simple and looks only at CPU usage. This could be fine
+  tuned to be using proper Istio or Nginx metrics. 
 
 Unfortunately as I am currently with COVID I couldn't get the Analysis to work
 properly to reflect this. But as the analysis is faulty, the new image doesn't
@@ -72,9 +74,35 @@ to implement the following features:
 
 - A proper CICD
 - Semnantic versioning promotion method for the Backstage Docker Image
-- A faulty Backstage Docker Image for this Demo.
 - Argo Events: to monitor whenever an Argo Rollout gets triggered.
 - Argo Workflows: to run a bunch of tests whenever a Rollout gets triggered.
 - Proper metrics gathering in Prometheus for the Analysis.
 
 I wish I had more time to achieve this.
+
+
+## Test it locally
+
+Fork this project, and run this command with your Github username:
+
+`sed -i 's/chess-seventh/<YOUR_GH_USERNAME>/g' ./init-files/*`
+
+Run `sh ./init.sh`.
+
+You can then see the stable version of backstage running by running:
+
+`kubectl argo rollouts get rollout backstage-rollout -n my-app -w`
+
+To see that the application fails run:
+
+`sed -i 's/v1.stable/v1.unstable/g' ./charts/backstage-app/*`
+
+Commit and push the change to your repository and see the roll-out happening.
+
+It will be stuck as the Analysis cannot run as the new Pod will be stuck in the
+CrashBackLoop state.
+
+ArgoCD takes some time to pick up the changes, but you can Refresh the
+application in the UI to make this go faster.
+
+The Backstage application will be up and running while the new version isn't accessible.
