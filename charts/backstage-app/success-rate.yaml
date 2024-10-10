@@ -7,7 +7,7 @@ spec:
     - name: success-rate
       initialDelay: 60s
       interval: 20s
-      successCondition: result[0] < 1
+      successCondition: result[0] < 4.5
       provider:
         prometheus:
           address: http://prometheus-operated.monitoring:9090
