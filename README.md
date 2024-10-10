@@ -21,7 +21,7 @@ once entering this projects' directory all dependencies should be installed.
 All dependencies for this project are (should be) included in the `shell.nix`
 file.
 
-There's an `init.sh` script that boots up a `minikube` with some addons and
+There's an `init.sh` script that boots up a `minikube` with add-ons and
 `--cpus=4`.
 
 If you don't want to install or use Nix (you're missing out ;-)) here are the
@@ -41,26 +41,40 @@ application I've used to roll out this project.
 - Adds the ArgoCD Application manifest:  `init-files/application-backstage.yaml`
 - Builds the Backstage Docker Image and pushes it to the local `minikube` registry.
 
-<!-- ## Backstage init -->
-<!---->
-<!-- ```bash -->
-<!-- npx @backstage/create-app@latest -->
-<!-- ``` -->
-<!---->
-<!-- Add `.dockerignore` to create backstage folder -->
-<!---->
-<!-- Using the multistage docker build for backstage, so any modification is -->
-<!-- properly cached and the final image is smaller. -->
-<!---->
-<!-- We are using PGSQL for testing as well. We're not going to dwell too much on -->
-<!-- how to handle properly secrets in this project, we're simply going to define -->
-<!-- them in an `.env` file. -->
-<!---->
-<!-- ```bash -->
-<!-- export POSTGRES_USER=postgres -->
-<!-- export POSTGRES_PASSWORD=postgres -->
-<!-- export POSTGRES_DB=backstage -->
-<!-- export POSTGRES_HOST=db -->
-<!-- export POSTGRES_PORT=5432 -->
-<!-- ``` -->
-<!---->
+## How to use this project
+
+When we roll-out the image of backstage: `backstage-app:v1` everything is fine,
+this image is stable.
+
+For the sake of the example, when we push any kind of changes in the Docker
+image, and we adapt the image in the roll-out manifest, if anything is going
+wrong, with the Canary Deployment we're implementing, them "faulty image" won't
+run, but the "original" image will still be accessible.
+
+## Technical choices, shortcuts and explanation
+
+In order to test this locally and make a proper PoC here is the shortcuts I
+have deliberately taken:
+
+- Omitted the CICD: to promote, push to a registry any changes done to the
+Docker Backstage app image.
+- Didn't fine-tune the Kube-Prometheus-Stack values.
+- Did not adapt neither Nginx nor Istio.
+- I have chosen to go with the Canaray Deployment method instead of the Blue-Green.
+
+Unfortunately as I am currently with COVID I couldn't get the Analysis to work
+properly to reflect this. But as the analysis is faulty, the new image doesn't
+get deployed either. So we're still running a stable version of the backstage
+app.
+
+If I had some more time to fine tune this fun project: I would have allowed me
+to implement the following features:
+
+- A proper CICD
+- Semnantic versioning promotion method for the Backstage Docker Image
+- A faulty Backstage Docker Image for this Demo.
+- Argo Events: to monitor whenever an Argo Rollout gets triggered.
+- Argo Workflows: to run a bunch of tests whenever a Rollout gets triggered.
+- Proper metrics gathering in Prometheus for the Analysis.
+
+I wish I had more time to achieve this.
