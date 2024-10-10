@@ -106,3 +106,5 @@ ArgoCD takes some time to pick up the changes, but you can Refresh the
 application in the UI to make this go faster.
 
 The Backstage application will be up and running while the new version isn't accessible.
+
+![Rollouts](./init-files/rollout.png)
