@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: backstage-rollout
-          # image: backstage-app:v1
-          image: backstage-franci:latest
+          image: backstage-app:v1
+          # image: backstage-franci:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
