@@ -39,15 +39,26 @@ function kube_cmds {
 }
 
 function build_docker_images {
-	cd ./backstage-fpiva/
-	docker build -t backstage-app:v1 .
-	minikube image load backstage-app:v1
+	cd ./backstage-app/
+	docker build -t backstage-app:v1.stable .
+	minikube image load backstage-app:v1.stable
+	cd -
+
+	git apply ./init-files/patch.diff
+
+	cd ./backstage-app/
+	docker build -t backstage-app:v1.unstable .
+	minikube image load backstage-app:v1.unstable
+
+	git checkout -- .
 }
 
 function main {
 	start_mini_kube
 	sleep 5
 	install_argo
+	sleep 5
+	build_docker_images
 	sleep 5
 	apply_argo_applications
 	sleep 5
